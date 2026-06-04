@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Wishlist - SpecShop{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h1 class="h2 mb-1">Your Wishlist</h1>
+        <p class="text-muted mb-0">Save products for later and move them into your cart anytime.</p>
+    </div>
+    <a class="btn btn-outline-secondary" href="{{ url_for('main.catalog') }}">Continue Shopping</a>
+</div>
+
+{% if items %}
+    <div class="row g-4">
+        {% for product in items %}
+            <div class="col-md-6 col-xl-4">
+                <div class="card h-100">
+                    <img src="{{ product.image_url }}" class="card-img-top" alt="{{ product.name }}">
+                    <div class="card-body d-flex flex-column">
+                        <h2 class="h5">{{ product.name }}</h2>
+                        <p class="text-muted small flex-grow-1">{{ product.description }}</p>
+                        <p class="price mb-3">${{ "%.2f"|format(product.price) }}</p>
+                        <div class="d-flex gap-2 flex-wrap">
+                            <form method="post" action="{{ url_for('main.move_wishlist_to_cart', product_id=product.id) }}" class="d-inline">
+                                <button class="btn btn-primary btn-sm" type="submit">Move to Cart</button>
+                            </form>
+                            <form method="post" action="{{ url_for('main.remove_from_wishlist', product_id=product.id) }}" class="d-inline">
+                                <button class="btn btn-outline-danger btn-sm" type="submit">Remove</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="alert alert-info">Your wishlist is empty. Add a few products and they will appear here.</div>
+{% endif %}
+{% endblock %}

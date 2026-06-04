@@ -33,9 +33,28 @@ def _cart_count():
     return sum(int(quantity) for quantity in _cart().values())
 
 
+def _wishlist():
+    return session.setdefault("wishlist", [])
+
+
+def _wishlist_items():
+    wishlist = _wishlist()
+    ids = [int(product_id) for product_id in wishlist if str(product_id).isdigit()]
+    products = Product.query.filter(Product.id.in_(ids)).all() if ids else []
+    return [product for product in products if str(product.id) in wishlist]
+
+
+def _wishlist_count():
+    return len(_wishlist())
+
+
 @bp.context_processor
 def inject_globals():
-    return {"cart_count": _cart_count(), "categories": Category.query.order_by(Category.name).all()}
+    return {
+        "cart_count": _cart_count(),
+        "wishlist_count": _wishlist_count(),
+        "categories": Category.query.order_by(Category.name).all(),
+    }
 
 
 @bp.route("/")
@@ -58,6 +77,48 @@ def catalog():
 def product_detail(product_id):
     product = db.session.get(Product, product_id) or abort(404)
     return render_template("product_detail.html", product=product)
+
+
+@bp.route("/wishlist")
+def view_wishlist():
+    items = _wishlist_items()
+    return render_template("wishlist.html", items=items)
+
+
+@bp.post("/wishlist/add/<int:product_id>")
+def add_to_wishlist(product_id):
+    db.session.get(Product, product_id) or abort(404)
+    wishlist = _wishlist()
+    product_id_str = str(product_id)
+    if product_id_str not in wishlist:
+        wishlist.append(product_id_str)
+        session.modified = True
+    flash("Product added to wishlist.", "success")
+    return redirect(request.referrer or url_for("main.view_wishlist"))
+
+
+@bp.post("/wishlist/remove/<int:product_id>")
+def remove_from_wishlist(product_id):
+    wishlist = _wishlist()
+    product_id_str = str(product_id)
+    if product_id_str in wishlist:
+        wishlist.remove(product_id_str)
+        session.modified = True
+    flash("Product removed from wishlist.", "warning")
+    return redirect(url_for("main.view_wishlist"))
+
+
+@bp.post("/wishlist/move-to-cart/<int:product_id>")
+def move_wishlist_to_cart(product_id):
+    db.session.get(Product, product_id) or abort(404)
+    cart = _cart()
+    cart[str(product_id)] = int(cart.get(str(product_id), 0)) + 1
+    wishlist = _wishlist()
+    if str(product_id) in wishlist:
+        wishlist.remove(str(product_id))
+    session.modified = True
+    flash("Product moved to cart.", "success")
+    return redirect(url_for("main.view_cart"))
 
 
 @bp.route("/cart")

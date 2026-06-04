@@ -86,12 +86,46 @@ pip --version
 py -0p</code></pre>
     <p>If Python is still not found, open Windows Settings, go to <strong>Apps &gt; Advanced app settings &gt; App execution aliases</strong>, turn off <code>python.exe</code> and <code>python3.exe</code>, then reinstall Python with PATH enabled.</p>
 
-    <h2>2. Open The Project In VS Code</h2>
+    <h2>2. Install Python And Spec-Kit On macOS</h2>
+    <p>macOS usually includes a system Python, but for development you should install your own Python 3.11+.</p>
+    <h3>Install Python With Homebrew</h3>
+    <pre><code>/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+brew install python@3.11
+python3.11 --version
+python3.11 -m pip --version</code></pre>
+    <p>If <code>python3.11</code> works but <code>python</code> does not, use <code>python3.11</code> in commands or add aliases:</p>
+    <pre><code>echo 'alias python=python3.11' &gt;&gt; ~/.zshrc
+echo 'alias pip="python3.11 -m pip"' &gt;&gt; ~/.zshrc
+source ~/.zshrc</code></pre>
+    <h3>Create The Virtual Environment On macOS</h3>
+    <pre><code>cd ~/Documents/SpecDrivenDevelopment
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
+python run.py</code></pre>
+    <p>Open <code>http://127.0.0.1:5000</code>. Run tests with:</p>
+    <pre><code>pytest</code></pre>
+    <h3>Install Spec-Kit On macOS</h3>
+    <p>Spec-Kit uses Bash scripts by default on Linux/macOS.</p>
+    <pre><code>curl -LsSf https://astral.sh/uv/install.sh | sh</code></pre>
+    <p>Close and reopen the terminal, then:</p>
+    <pre><code>uv --version
+uv tool install specify-cli --from git+https://github.com/github/spec-kit.git
+specify version
+specify self check</code></pre>
+    <p>Initialize Spec-Kit on macOS:</p>
+    <pre><code>cd ~/Documents/SpecDrivenDevelopment
+specify init . --script sh --integration copilot</code></pre>
+    <p>One-time usage without persistent install:</p>
+    <pre><code>uvx --from git+https://github.com/github/spec-kit.git specify init . --script sh --integration copilot</code></pre>
+
+    <h2>3. Open The Project In VS Code</h2>
     <pre><code>cd C:\Users\MSUSERSL123\Documents\SpecDrivenDevelopment
 code .</code></pre>
     <p>Install the Python, GitHub Copilot, and GitHub Copilot Chat extensions.</p>
 
-    <h2>3. Create The Virtual Environment</h2>
+    <h2>4. Create The Virtual Environment</h2>
     <pre><code>python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 python -m pip install --upgrade pip
@@ -105,7 +139,7 @@ python -m pip install -r requirements.txt</code></pre>
     <p>Run tests:</p>
     <pre><code>pytest</code></pre>
 
-    <h2>4. Install Spec-Kit</h2>
+    <h2>5. Install Spec-Kit</h2>
     <p>Install Spec-Kit from the official GitHub repository.</p>
     <pre><code>powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"</code></pre>
     <p>Restart the terminal, then:</p>
@@ -117,13 +151,13 @@ specify self check</code></pre>
     <pre><code>cd C:\Users\MSUSERSL123\Documents\SpecDrivenDevelopment
 specify init . --script ps --integration copilot</code></pre>
 
-    <h2>5. Recommended Workflow</h2>
+    <h2>6. Recommended Workflow</h2>
     <p>Quick experiment path:</p>
     <pre><code>/speckit.specify -&gt; /speckit.plan -&gt; /speckit.tasks -&gt; /speckit.implement</code></pre>
     <p>Full feature path:</p>
     <pre><code>/speckit.constitution -&gt; /speckit.specify -&gt; /speckit.clarify -&gt; /speckit.checklist -&gt; /speckit.plan -&gt; /speckit.tasks -&gt; /speckit.analyze -&gt; /speckit.implement</code></pre>
 
-    <h2>6. After /speckit.specify, What Happens Next?</h2>
+    <h2>7. After /speckit.specify, What Happens Next?</h2>
     <p><code>/speckit.specify</code> does not implement code. It creates or updates a feature specification.</p>
     <pre><code>specs/002-product-reviews/spec.md
 specs/003-wishlist-feature/spec.md</code></pre>
@@ -133,7 +167,7 @@ dir specs</code></pre>
     <p>Open the new <code>spec.md</code> and confirm the user stories, acceptance criteria, requirements, assumptions, and out-of-scope behavior are correct.</p>
     <p class="note">If you created more than one feature, implement one feature at a time. Finish it, test it, commit it, then move to the next feature.</p>
 
-    <h2>7. How To Know Each Phase Is Done</h2>
+    <h2>8. How To Know Each Phase Is Done</h2>
     <h3>Step 1: Specify</h3>
     <pre><code>/speckit.specify Add product reviews to the ecommerce app...</code></pre>
     <p>Done when <code>specs/&lt;feature-name&gt;/spec.md</code> exists and the feature behavior is clear.</p>
@@ -167,7 +201,7 @@ dir specs</code></pre>
 python run.py</code></pre>
     <p>Done when tests pass, the app starts, and you manually verify the feature in the browser.</p>
 
-    <h2>8. Constitution To Test Explained</h2>
+    <h2>9. Constitution To Test Explained</h2>
     <pre><code>Constitution = project rules
 Specify      = what users need
 Clarify      = remove confusion
@@ -178,7 +212,7 @@ Analyze      = consistency check before coding
 Implement    = write the code
 Test         = prove it works</code></pre>
 
-    <h2>9. Current Feature: Product Reviews</h2>
+    <h2>10. Current Feature: Product Reviews</h2>
     <p>You already ran the product reviews specification. Continue with:</p>
     <pre><code>/speckit.clarify Focus on required fields, comment length, rating validation, empty review states, and whether one user can submit multiple reviews.</code></pre>
     <pre><code>/speckit.checklist</code></pre>
@@ -192,7 +226,7 @@ specs/002-product-reviews/checklists/requirements.md
 specs/002-product-reviews/plan.md
 specs/002-product-reviews/tasks.md</code></pre>
 
-    <h2>10. Current Feature: Wishlist</h2>
+    <h2>11. Current Feature: Wishlist</h2>
     <p>You already ran the wishlist specification. Continue with:</p>
     <pre><code>/speckit.clarify Focus on duplicate wishlist entries, empty wishlist behavior, moving wishlist items to cart, and session-only persistence.</code></pre>
     <pre><code>/speckit.checklist</code></pre>
@@ -206,7 +240,7 @@ specs/003-wishlist-feature/checklists/requirements.md
 specs/003-wishlist-feature/plan.md
 specs/003-wishlist-feature/tasks.md</code></pre>
 
-    <h2>11. Prompt Meanings</h2>
+    <h2>12. Prompt Meanings</h2>
     <h3>/speckit.constitution</h3>
     <p>Defines project principles and guardrails.</p>
     <pre><code>/speckit.constitution This is a Flask ecommerce learning project. Use Python 3.11, Flask, SQLAlchemy, SQLite, Jinja2, Bootstrap 5, and pytest. Keep requirements in local markdown files. Avoid real payment processing in v1. Every feature should include tests for the main workflow.</code></pre>
@@ -239,7 +273,7 @@ specs/003-wishlist-feature/tasks.md</code></pre>
     <p>Executes the tasks and writes code.</p>
     <pre><code>/speckit.implement</code></pre>
 
-    <h2>12. Sample Feature Prompts</h2>
+    <h2>13. Sample Feature Prompts</h2>
     <h3>Product Reviews</h3>
     <pre><code>/speckit.specify Add product reviews to the ecommerce app. Shoppers can add a review to a product detail page with reviewer name, rating from 1 to 5, and comment. Product detail pages show all reviews and average rating. Authentication is not required. Reviews should be stored in SQLite. Reviews cannot be edited or deleted in this version.</code></pre>
 
@@ -252,7 +286,47 @@ specs/003-wishlist-feature/tasks.md</code></pre>
     <h3>Admin Authentication</h3>
     <pre><code>/speckit.specify Add simple admin authentication. Admin pages should require login. A single admin username and password can be configured with environment variables. Shopper catalog, cart, and checkout remain public.</code></pre>
 
-    <h2>13. GitHub Commands</h2>
+    <h3>Product Sorting</h3>
+    <pre><code>/speckit.specify Add sorting to the product catalog. Shoppers can sort products by name, price low to high, price high to low, and newest first. Sorting should work with search and category filters.</code></pre>
+    <pre><code>/speckit.plan Add a sort query parameter to the catalog route, map allowed sort values to SQLAlchemy order clauses, preserve filters in the UI, and test each sorting mode.</code></pre>
+
+    <h3>Product Stock Warnings</h3>
+    <pre><code>/speckit.specify Add stock warnings to product cards and product detail pages. Products with stock less than 5 should show "Only a few left". Products with zero stock should show "Out of stock" and cannot be added to cart.</code></pre>
+    <pre><code>/speckit.plan Use the existing Product.stock field. Update add-to-cart validation, catalog cards, product detail template, cart behavior, and tests for low-stock and out-of-stock products.</code></pre>
+
+    <h3>Coupon Codes</h3>
+    <pre><code>/speckit.specify Add simple coupon codes at checkout. Shoppers can enter a coupon code in the cart or checkout page. Supported demo coupons are SAVE10 for 10 percent off and FREESHIP for a shipping discount display. Coupon discounts should be shown in the order summary. Real payment integration is not required.</code></pre>
+    <pre><code>/speckit.plan Store coupon choice in the session, add validation for allowed coupon codes, update cart and checkout totals, persist discount information on orders if needed, and add tests.</code></pre>
+
+    <h3>Order Search In Admin</h3>
+    <pre><code>/speckit.specify Add admin order search. Admin users can search orders by customer name, email, or order id. The order list should show matching results and preserve the search term in the input.</code></pre>
+    <pre><code>/speckit.plan Update the admin orders route with optional q parameter, query Order fields safely, update the admin orders template, and add tests for name, email, order id, and no-result searches.</code></pre>
+
+    <h3>Product Image URL Validation</h3>
+    <pre><code>/speckit.specify Improve admin product management by validating image URLs. When creating or editing a product, image_url must be a valid http or https URL. Invalid image URLs should show a clear validation message and should not save changes.</code></pre>
+    <pre><code>/speckit.plan Add server-side URL validation in product create and edit routes, preserve form values on validation errors, update templates for error messages, and add tests.</code></pre>
+
+    <h3>Category Management</h3>
+    <pre><code>/speckit.specify Add admin category management. Admin users can create, edit, and delete categories. Categories with products cannot be deleted until products are moved or deleted. Product create and edit forms should use the updated category list.</code></pre>
+    <pre><code>/speckit.plan Add admin category routes and templates, enforce delete protection for categories with products, update navigation if needed, and add tests for create, edit, protected delete, and successful delete.</code></pre>
+
+    <h3>Recently Viewed Products</h3>
+    <pre><code>/speckit.specify Add recently viewed products. When a shopper opens product detail pages, the app stores the last five viewed products in the session. The catalog page and product detail page should show a compact recently viewed section.</code></pre>
+    <pre><code>/speckit.plan Use Flask session storage for recent product ids, avoid duplicates, keep only the five most recent items, update templates, and test ordering and duplicate behavior.</code></pre>
+
+    <h3>Order Confirmation Email Preview</h3>
+    <pre><code>/speckit.specify Add an order confirmation email preview. After checkout, the success page should show a preview of the email that would be sent, including customer name, order id, line items, total, and payment status. Actual email sending is not required.</code></pre>
+    <pre><code>/speckit.plan Build an email-preview partial/template using existing Order and OrderItem data. Render it on the order success page and admin order detail page. Add tests that confirmation content appears after checkout.</code></pre>
+
+    <h3>Product Recommendations</h3>
+    <pre><code>/speckit.specify Add simple product recommendations. Product detail pages should show up to four recommended products from the same category, excluding the current product. If fewer than four exist, show what is available.</code></pre>
+    <pre><code>/speckit.plan Update the product detail route to query same-category products, update the template with recommendation cards, and add tests for exclusion of the current product and limited result count.</code></pre>
+
+    <h3>Checkout Form Validation</h3>
+    <pre><code>/speckit.specify Improve checkout validation. Customer name, email, address, and city are required. Email must look valid. The checkout page should show field-level validation messages and preserve entered values after validation errors.</code></pre>
+    <pre><code>/speckit.plan Add server-side validation in the checkout route, pass errors and form data back to the template, update checkout UI with Bootstrap validation styling, and add tests for invalid and valid checkout.</code></pre>
+
+    <h2>14. GitHub Commands</h2>
     <pre><code>git remote add origin https://github.com/nathdiptanu/ecoomapp-spec-kit.git
 git add .
 git commit -m "Initialize Spec-Kit ecommerce app"

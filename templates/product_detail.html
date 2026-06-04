@@ -11,9 +11,12 @@
         <p class="lead">{{ product.description }}</p>
         <p class="price fs-3">${{ "%.2f"|format(product.price) }}</p>
         <p class="text-muted">Stock available: {{ product.stock }}</p>
-        <form method="post" action="{{ url_for('main.add_to_cart', product_id=product.id) }}" class="d-flex gap-2">
+        <form method="post" action="{{ url_for('main.add_to_cart', product_id=product.id) }}" class="d-flex gap-2 mb-2">
             <input class="form-control w-auto" type="number" name="quantity" value="1" min="1">
             <button class="btn btn-primary" type="submit">Add to Cart</button>
+        </form>
+        <form method="post" action="{{ url_for('main.add_to_wishlist', product_id=product.id) }}" class="d-flex gap-2">
+            <button class="btn btn-outline-secondary" type="submit">Add to Wishlist</button>
         </form>
     </div>
 </div>
