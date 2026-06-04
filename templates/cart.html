@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Cart - SpecShop{% endblock %}
+{% block content %}
+<h1 class="h2 mb-4">Shopping Cart</h1>
+{% if items %}
+    <div class="table-responsive">
+        <table class="table align-middle">
+            <thead>
+            <tr>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Total</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for item in items %}
+                <tr>
+                    <td>{{ item.product.name }}</td>
+                    <td>${{ "%.2f"|format(item.product.price) }}</td>
+                    <td>
+                        <form method="post" action="{{ url_for('main.update_cart', product_id=item.product.id) }}" class="d-flex gap-2">
+                            <input class="form-control form-control-sm" type="number" name="quantity" min="0" value="{{ item.quantity }}">
+                            <button class="btn btn-sm btn-outline-primary">Update</button>
+                        </form>
+                    </td>
+                    <td>${{ "%.2f"|format(item.line_total) }}</td>
+                    <td>
+                        <form method="post" action="{{ url_for('main.remove_from_cart', product_id=item.product.id) }}">
+                            <button class="btn btn-sm btn-outline-danger">Remove</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="d-flex justify-content-between align-items-center">
+        <p class="fs-4 mb-0">Total: <strong>${{ "%.2f"|format(total) }}</strong></p>
+        <a class="btn btn-success btn-lg" href="{{ url_for('main.checkout') }}">Checkout</a>
+    </div>
+{% else %}
+    <div class="alert alert-info">Your cart is empty.</div>
+    <a class="btn btn-primary" href="{{ url_for('main.catalog') }}">Browse Products</a>
+{% endif %}
+{% endblock %}

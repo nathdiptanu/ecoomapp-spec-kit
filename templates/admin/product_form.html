@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}{% if product %}Edit{% else %}Create{% endif %} Product - SpecShop{% endblock %}
+{% block content %}
+<h1 class="h2 mb-4">{% if product %}Edit{% else %}Create{% endif %} Product</h1>
+<form method="post" class="row g-3">
+    <div class="col-md-6">
+        <label class="form-label" for="name">Name</label>
+        <input class="form-control" id="name" name="name" value="{{ product.name if product else '' }}" required>
+    </div>
+    <div class="col-md-3">
+        <label class="form-label" for="price">Price</label>
+        <input class="form-control" id="price" name="price" type="number" step="0.01" min="0" value="{{ product.price if product else '' }}" required>
+    </div>
+    <div class="col-md-3">
+        <label class="form-label" for="stock">Stock</label>
+        <input class="form-control" id="stock" name="stock" type="number" min="0" value="{{ product.stock if product else 10 }}" required>
+    </div>
+    <div class="col-md-6">
+        <label class="form-label" for="category_id">Category</label>
+        <select class="form-select" id="category_id" name="category_id" required>
+            {% for category in categories %}
+                <option value="{{ category.id }}" {% if product and product.category_id == category.id %}selected{% endif %}>{{ category.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="col-md-6">
+        <label class="form-label" for="image_url">Image URL</label>
+        <input class="form-control" id="image_url" name="image_url" value="{{ product.image_url if product else 'https://placehold.co/600x400?text=Product' }}" required>
+    </div>
+    <div class="col-12">
+        <label class="form-label" for="description">Description</label>
+        <textarea class="form-control" id="description" name="description" rows="4" required>{{ product.description if product else '' }}</textarea>
+    </div>
+    <div class="col-12">
+        <button class="btn btn-success" type="submit">Save Product</button>
+        <a class="btn btn-outline-secondary" href="{{ url_for('main.admin_products') }}">Cancel</a>
+    </div>
+</form>
+{% endblock %}

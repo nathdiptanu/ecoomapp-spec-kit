@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Admin - SpecShop{% endblock %}
+{% block content %}
+<h1 class="h2 mb-4">Admin Dashboard</h1>
+<div class="row g-4">
+    <div class="col-md-6">
+        <div class="border rounded p-4">
+            <h2 class="h4">Products</h2>
+            <p class="display-6">{{ product_count }}</p>
+            <a class="btn btn-primary" href="{{ url_for('main.admin_products') }}">Manage Products</a>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="border rounded p-4">
+            <h2 class="h4">Orders</h2>
+            <p class="display-6">{{ order_count }}</p>
+            <a class="btn btn-primary" href="{{ url_for('main.admin_orders') }}">View Orders</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

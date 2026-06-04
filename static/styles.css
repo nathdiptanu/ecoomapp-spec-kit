@@ -1,0 +1,17 @@
+.product-card img {
+    aspect-ratio: 3 / 2;
+    object-fit: cover;
+}
+
+.navbar-brand {
+    font-weight: 700;
+}
+
+.price {
+    font-weight: 700;
+    color: #0f766e;
+}
+
+.admin-table-actions {
+    white-space: nowrap;
+}

@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Spec-Kit Development Guide For SpecShop</title>
+    <style>
+        body {
+            color: #172033;
+            font-family: Arial, Helvetica, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            background: #f6f8fb;
+        }
+        main {
+            background: #ffffff;
+            margin: 32px auto;
+            max-width: 1040px;
+            padding: 40px;
+            border: 1px solid #d9e1ec;
+            border-radius: 8px;
+        }
+        h1, h2, h3 {
+            color: #0b2545;
+            line-height: 1.25;
+        }
+        h1 {
+            border-bottom: 3px solid #1f77b4;
+            padding-bottom: 12px;
+        }
+        h2 {
+            border-bottom: 1px solid #d9e1ec;
+            margin-top: 36px;
+            padding-bottom: 8px;
+        }
+        code {
+            background: #eef3f8;
+            border-radius: 4px;
+            padding: 2px 5px;
+        }
+        pre {
+            background: #0f172a;
+            border-radius: 8px;
+            color: #e2e8f0;
+            overflow-x: auto;
+            padding: 16px;
+        }
+        pre code {
+            background: transparent;
+            color: inherit;
+            padding: 0;
+        }
+        a {
+            color: #0b65c2;
+        }
+        .note {
+            background: #fff8e6;
+            border-left: 4px solid #f59e0b;
+            padding: 12px 16px;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <h1>Spec-Kit Development Guide For SpecShop</h1>
+    <p>This guide explains how to install Python, set up this Flask ecommerce project, install Spec-Kit, and use Spec-Kit prompts to develop new features from requirements through implementation.</p>
+
+    <h2>Official Links</h2>
+    <ul>
+        <li><a href="https://github.github.com/spec-kit/installation.html">Spec-Kit installation</a></li>
+        <li><a href="https://github.github.com/spec-kit/quickstart.html">Spec-Kit quick start</a></li>
+        <li><a href="https://github.com/github/spec-kit">github/spec-kit</a></li>
+    </ul>
+
+    <h2>1. Install Python On Windows</h2>
+    <ol>
+        <li>Download Python 3.11.1 from <a href="https://www.python.org/downloads/release/python-3111/">python.org</a>.</li>
+        <li>Run the installer.</li>
+        <li>Select <strong>Add python.exe to PATH</strong>.</li>
+        <li>Select <strong>Customize installation</strong>.</li>
+        <li>Keep <code>pip</code> selected.</li>
+        <li>Finish installation, then restart VS Code and PowerShell.</li>
+    </ol>
+    <pre><code>python --version
+pip --version
+py -0p</code></pre>
+    <p>If Python is still not found, open Windows Settings, go to <strong>Apps &gt; Advanced app settings &gt; App execution aliases</strong>, turn off <code>python.exe</code> and <code>python3.exe</code>, then reinstall Python with PATH enabled.</p>
+
+    <h2>2. Open The Project In VS Code</h2>
+    <pre><code>cd C:\Users\MSUSERSL123\Documents\SpecDrivenDevelopment
+code .</code></pre>
+    <p>Install the Python, GitHub Copilot, and GitHub Copilot Chat extensions.</p>
+
+    <h2>3. Create The Virtual Environment</h2>
+    <pre><code>python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt</code></pre>
+    <p>If activation is blocked:</p>
+    <pre><code>Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
+.\.venv\Scripts\Activate.ps1</code></pre>
+    <p>Run the app:</p>
+    <pre><code>python run.py</code></pre>
+    <p>Open <code>http://127.0.0.1:5000</code>.</p>
+    <p>Run tests:</p>
+    <pre><code>pytest</code></pre>
+
+    <h2>4. Install Spec-Kit</h2>
+    <p>Install Spec-Kit from the official GitHub repository.</p>
+    <pre><code>powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"</code></pre>
+    <p>Restart the terminal, then:</p>
+    <pre><code>uv --version
+uv tool install specify-cli --from git+https://github.com/github/spec-kit.git
+specify version
+specify self check</code></pre>
+    <p>Initialize this project:</p>
+    <pre><code>cd C:\Users\MSUSERSL123\Documents\SpecDrivenDevelopment
+specify init . --script ps --integration copilot</code></pre>
+
+    <h2>5. Recommended Workflow</h2>
+    <p>Quick experiment path:</p>
+    <pre><code>/speckit.specify -&gt; /speckit.plan -&gt; /speckit.tasks -&gt; /speckit.implement</code></pre>
+    <p>Full feature path:</p>
+    <pre><code>/speckit.constitution -&gt; /speckit.specify -&gt; /speckit.clarify -&gt; /speckit.checklist -&gt; /speckit.plan -&gt; /speckit.tasks -&gt; /speckit.analyze -&gt; /speckit.implement</code></pre>
+
+    <h2>6. Prompt Meanings</h2>
+    <h3>/speckit.constitution</h3>
+    <p>Defines project principles and guardrails.</p>
+    <pre><code>/speckit.constitution This is a Flask ecommerce learning project. Use Python 3.11, Flask, SQLAlchemy, SQLite, Jinja2, Bootstrap 5, and pytest. Keep requirements in local markdown files. Avoid real payment processing in v1. Every feature should include tests for the main workflow.</code></pre>
+
+    <h3>/speckit.specify</h3>
+    <p>Creates the feature specification. Focus on what users need and why.</p>
+    <pre><code>/speckit.specify Add product reviews. Shoppers can submit a reviewer name, rating from 1 to 5, and comment from the product detail page. Product pages display reviews and average rating. Authentication is not required.</code></pre>
+
+    <h3>/speckit.clarify</h3>
+    <p>Finds and resolves ambiguous requirements before planning.</p>
+    <pre><code>/speckit.clarify Focus on review validation, rating rules, anonymous users, and whether reviews can be edited or deleted.</code></pre>
+
+    <h3>/speckit.checklist</h3>
+    <p>Validates that the specification is complete enough to plan.</p>
+    <pre><code>/speckit.checklist</code></pre>
+
+    <h3>/speckit.plan</h3>
+    <p>Creates the technical plan. Put stack, architecture, database, UI, and testing choices here.</p>
+    <pre><code>/speckit.plan Use Flask, SQLAlchemy, SQLite, Jinja2 templates, Bootstrap 5, and pytest. Add a Review model related to Product. Add a POST route for review creation. Update the product detail page and add tests.</code></pre>
+
+    <h3>/speckit.tasks</h3>
+    <p>Breaks the plan into ordered implementation tasks.</p>
+    <pre><code>/speckit.tasks</code></pre>
+
+    <h3>/speckit.analyze</h3>
+    <p>Checks consistency between spec, plan, and tasks before coding.</p>
+    <pre><code>/speckit.analyze</code></pre>
+
+    <h3>/speckit.implement</h3>
+    <p>Executes the tasks and writes code.</p>
+    <pre><code>/speckit.implement</code></pre>
+
+    <h2>7. Sample Feature Prompts</h2>
+    <h3>Product Reviews</h3>
+    <pre><code>/speckit.specify Add product reviews to the ecommerce app. Shoppers can add a review to a product detail page with reviewer name, rating from 1 to 5, and comment. Product detail pages show all reviews and average rating. Authentication is not required. Reviews should be stored in SQLite. Reviews cannot be edited or deleted in this version.</code></pre>
+
+    <h3>Wishlist</h3>
+    <pre><code>/speckit.specify Add a wishlist feature. Shoppers can add products to a wishlist from catalog and product detail pages. The wishlist is stored in the session for v1. Shoppers can view wishlist items, remove items, and move an item from wishlist to cart. Authentication is not required.</code></pre>
+
+    <h3>Catalog Pagination</h3>
+    <pre><code>/speckit.specify Improve the product catalog with pagination. The catalog should show 12 products per page, preserve search and category filters between pages, and display previous/next controls. The UI should remain responsive.</code></pre>
+
+    <h3>Admin Authentication</h3>
+    <pre><code>/speckit.specify Add simple admin authentication. Admin pages should require login. A single admin username and password can be configured with environment variables. Shopper catalog, cart, and checkout remain public.</code></pre>
+
+    <h2>8. GitHub Commands</h2>
+    <pre><code>git remote add origin https://github.com/nathdiptanu/ecoomapp-spec-kit.git
+git add .
+git commit -m "Initialize Spec-Kit ecommerce app"
+git push -u origin master</code></pre>
+
+    <p class="note">Commit before and after every Spec-Kit feature. That gives you a clean recovery point while learning.</p>
+</main>
+</body>
+</html>

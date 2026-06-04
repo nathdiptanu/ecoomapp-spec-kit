@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}{{ product.name }} - SpecShop{% endblock %}
+{% block content %}
+<div class="row g-4">
+    <div class="col-lg-6">
+        <img src="{{ product.image_url }}" class="img-fluid rounded border" alt="{{ product.name }}">
+    </div>
+    <div class="col-lg-6">
+        <span class="badge text-bg-secondary mb-3">{{ product.category.name }}</span>
+        <h1>{{ product.name }}</h1>
+        <p class="lead">{{ product.description }}</p>
+        <p class="price fs-3">${{ "%.2f"|format(product.price) }}</p>
+        <p class="text-muted">Stock available: {{ product.stock }}</p>
+        <form method="post" action="{{ url_for('main.add_to_cart', product_id=product.id) }}" class="d-flex gap-2">
+            <input class="form-control w-auto" type="number" name="quantity" value="1" min="1">
+            <button class="btn btn-primary" type="submit">Add to Cart</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

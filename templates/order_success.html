@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Order Confirmed - SpecShop{% endblock %}
+{% block content %}
+<div class="text-center py-5">
+    <h1 class="display-6">Order Confirmed</h1>
+    <p class="lead">Payment simulated successfully for order #{{ order.id }}.</p>
+    <p>Total paid: <strong>${{ "%.2f"|format(order.total) }}</strong></p>
+    <a class="btn btn-primary" href="{{ url_for('main.catalog') }}">Continue Shopping</a>
+    <a class="btn btn-outline-secondary" href="{{ url_for('main.admin_order_detail', order_id=order.id) }}">View in Admin</a>
+</div>
+{% endblock %}

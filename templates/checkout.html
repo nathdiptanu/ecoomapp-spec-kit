@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Checkout - SpecShop{% endblock %}
+{% block content %}
+<div class="row g-4">
+    <div class="col-lg-7">
+        <h1 class="h2 mb-4">Checkout</h1>
+        <form method="post" class="row g-3">
+            <div class="col-md-6">
+                <label class="form-label" for="customer_name">Full name</label>
+                <input class="form-control" id="customer_name" name="customer_name" required>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label" for="email">Email</label>
+                <input class="form-control" id="email" name="email" type="email" required>
+            </div>
+            <div class="col-12">
+                <label class="form-label" for="address">Address</label>
+                <textarea class="form-control" id="address" name="address" rows="3" required></textarea>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label" for="city">City</label>
+                <input class="form-control" id="city" name="city" required>
+            </div>
+            <div class="col-12">
+                <button class="btn btn-success btn-lg" type="submit">Buy Now</button>
+            </div>
+        </form>
+    </div>
+    <div class="col-lg-5">
+        <div class="border rounded p-3">
+            <h2 class="h4">Order Summary</h2>
+            {% for item in items %}
+                <div class="d-flex justify-content-between border-bottom py-2">
+                    <span>{{ item.product.name }} x {{ item.quantity }}</span>
+                    <strong>${{ "%.2f"|format(item.line_total) }}</strong>
+                </div>
+            {% endfor %}
+            <p class="fs-4 mt-3 mb-0">Total: <strong>${{ "%.2f"|format(total) }}</strong></p>
+            <p class="text-muted small mt-2 mb-0">Payment is simulated. No gateway or card data is collected.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
