@@ -123,7 +123,90 @@ specify init . --script ps --integration copilot</code></pre>
     <p>Full feature path:</p>
     <pre><code>/speckit.constitution -&gt; /speckit.specify -&gt; /speckit.clarify -&gt; /speckit.checklist -&gt; /speckit.plan -&gt; /speckit.tasks -&gt; /speckit.analyze -&gt; /speckit.implement</code></pre>
 
-    <h2>6. Prompt Meanings</h2>
+    <h2>6. After /speckit.specify, What Happens Next?</h2>
+    <p><code>/speckit.specify</code> does not implement code. It creates or updates a feature specification.</p>
+    <pre><code>specs/002-product-reviews/spec.md
+specs/003-wishlist-feature/spec.md</code></pre>
+    <p>After running <code>/speckit.specify</code>, check:</p>
+    <pre><code>git status
+dir specs</code></pre>
+    <p>Open the new <code>spec.md</code> and confirm the user stories, acceptance criteria, requirements, assumptions, and out-of-scope behavior are correct.</p>
+    <p class="note">If you created more than one feature, implement one feature at a time. Finish it, test it, commit it, then move to the next feature.</p>
+
+    <h2>7. How To Know Each Phase Is Done</h2>
+    <h3>Step 1: Specify</h3>
+    <pre><code>/speckit.specify Add product reviews to the ecommerce app...</code></pre>
+    <p>Done when <code>specs/&lt;feature-name&gt;/spec.md</code> exists and the feature behavior is clear.</p>
+
+    <h3>Step 2: Clarify</h3>
+    <pre><code>/speckit.clarify Focus on required fields, edge cases, validation, and out-of-scope behavior.</code></pre>
+    <p>Done when unclear assumptions and edge cases are answered.</p>
+
+    <h3>Step 3: Checklist</h3>
+    <pre><code>/speckit.checklist</code></pre>
+    <p>Done when a checklist exists under <code>specs/&lt;feature-name&gt;/checklists/</code> and important items are resolved.</p>
+
+    <h3>Step 4: Plan</h3>
+    <pre><code>/speckit.plan Use Flask, SQLAlchemy, SQLite, Jinja2, Bootstrap 5, and pytest...</code></pre>
+    <p>Done when <code>plan.md</code> exists and describes model changes, route changes, template changes, tests, and implementation order.</p>
+
+    <h3>Step 5: Tasks</h3>
+    <pre><code>/speckit.tasks</code></pre>
+    <p>Done when <code>tasks.md</code> exists and the tasks are small, ordered, and include tests plus verification.</p>
+
+    <h3>Step 6: Analyze</h3>
+    <pre><code>/speckit.analyze</code></pre>
+    <p>Done when there are no major contradictions between spec, plan, and tasks.</p>
+
+    <h3>Step 7: Implement</h3>
+    <pre><code>/speckit.implement</code></pre>
+    <p>Done when code, templates, and tests have changed and the feature can be used in the app.</p>
+
+    <h3>Step 8: Test</h3>
+    <pre><code>pytest
+python run.py</code></pre>
+    <p>Done when tests pass, the app starts, and you manually verify the feature in the browser.</p>
+
+    <h2>8. Constitution To Test Explained</h2>
+    <pre><code>Constitution = project rules
+Specify      = what users need
+Clarify      = remove confusion
+Checklist    = validate requirement quality
+Plan         = how the app will be changed
+Tasks        = ordered engineering checklist
+Analyze      = consistency check before coding
+Implement    = write the code
+Test         = prove it works</code></pre>
+
+    <h2>9. Current Feature: Product Reviews</h2>
+    <p>You already ran the product reviews specification. Continue with:</p>
+    <pre><code>/speckit.clarify Focus on required fields, comment length, rating validation, empty review states, and whether one user can submit multiple reviews.</code></pre>
+    <pre><code>/speckit.checklist</code></pre>
+    <pre><code>/speckit.plan Use the existing Flask app factory, SQLAlchemy models, SQLite database, Jinja2 templates, Bootstrap 5, and pytest. Add a Review model with product_id, reviewer_name, rating, comment, and created_at. Add a POST route to create reviews from product detail pages. Display average rating and reviews on product detail. Add tests for validation and display.</code></pre>
+    <pre><code>/speckit.tasks</code></pre>
+    <pre><code>/speckit.analyze</code></pre>
+    <pre><code>/speckit.implement</code></pre>
+    <p>Expected files:</p>
+    <pre><code>specs/002-product-reviews/spec.md
+specs/002-product-reviews/checklists/requirements.md
+specs/002-product-reviews/plan.md
+specs/002-product-reviews/tasks.md</code></pre>
+
+    <h2>10. Current Feature: Wishlist</h2>
+    <p>You already ran the wishlist specification. Continue with:</p>
+    <pre><code>/speckit.clarify Focus on duplicate wishlist entries, empty wishlist behavior, moving wishlist items to cart, and session-only persistence.</code></pre>
+    <pre><code>/speckit.checklist</code></pre>
+    <pre><code>/speckit.plan Use the existing Flask session approach, similar to the cart. Add wishlist helper functions, routes for add/remove/view/move-to-cart, Bootstrap template updates, and pytest coverage for wishlist behavior. Do not create a database table for wishlist v1.</code></pre>
+    <pre><code>/speckit.tasks</code></pre>
+    <pre><code>/speckit.analyze</code></pre>
+    <pre><code>/speckit.implement</code></pre>
+    <p>Expected files:</p>
+    <pre><code>specs/003-wishlist-feature/spec.md
+specs/003-wishlist-feature/checklists/requirements.md
+specs/003-wishlist-feature/plan.md
+specs/003-wishlist-feature/tasks.md</code></pre>
+
+    <h2>11. Prompt Meanings</h2>
     <h3>/speckit.constitution</h3>
     <p>Defines project principles and guardrails.</p>
     <pre><code>/speckit.constitution This is a Flask ecommerce learning project. Use Python 3.11, Flask, SQLAlchemy, SQLite, Jinja2, Bootstrap 5, and pytest. Keep requirements in local markdown files. Avoid real payment processing in v1. Every feature should include tests for the main workflow.</code></pre>
@@ -156,7 +239,7 @@ specify init . --script ps --integration copilot</code></pre>
     <p>Executes the tasks and writes code.</p>
     <pre><code>/speckit.implement</code></pre>
 
-    <h2>7. Sample Feature Prompts</h2>
+    <h2>12. Sample Feature Prompts</h2>
     <h3>Product Reviews</h3>
     <pre><code>/speckit.specify Add product reviews to the ecommerce app. Shoppers can add a review to a product detail page with reviewer name, rating from 1 to 5, and comment. Product detail pages show all reviews and average rating. Authentication is not required. Reviews should be stored in SQLite. Reviews cannot be edited or deleted in this version.</code></pre>
 
@@ -169,7 +252,7 @@ specify init . --script ps --integration copilot</code></pre>
     <h3>Admin Authentication</h3>
     <pre><code>/speckit.specify Add simple admin authentication. Admin pages should require login. A single admin username and password can be configured with environment variables. Shopper catalog, cart, and checkout remain public.</code></pre>
 
-    <h2>8. GitHub Commands</h2>
+    <h2>13. GitHub Commands</h2>
     <pre><code>git remote add origin https://github.com/nathdiptanu/ecoomapp-spec-kit.git
 git add .
 git commit -m "Initialize Spec-Kit ecommerce app"

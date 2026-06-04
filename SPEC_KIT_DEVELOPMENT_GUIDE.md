@@ -167,7 +167,346 @@ git add .
 git commit -m "Save current work"
 ```
 
-## 7. What Each Prompt Means
+## 7. After `/speckit.specify`, What Happens Next?
+
+`/speckit.specify` does not implement code. It creates or updates a feature specification, usually in a folder like:
+
+```text
+specs/002-product-reviews/spec.md
+specs/003-wishlist-feature/spec.md
+```
+
+After running `/speckit.specify`, check these things:
+
+```powershell
+git status
+dir specs
+```
+
+Open the new `spec.md` and confirm:
+
+- The user stories are correct.
+- The acceptance scenarios are correct.
+- The requirements are specific.
+- The out-of-scope items are clear.
+- The status is ready to continue or only marked draft because clarification is still needed.
+
+If you created more than one feature, do not implement both at once while learning. Pick one feature, finish it, test it, commit it, then move to the next feature.
+
+Current example:
+
+```text
+Feature 1: specs/002-product-reviews/
+Feature 2: specs/003-wishlist-feature/
+```
+
+Recommended order:
+
+```text
+Finish product reviews first, then wishlist.
+```
+
+## 8. How To Make Sure Plan, Tasks, Implement, And Tests Are Done
+
+Use this checklist for every feature.
+
+### Step 1: Specify
+
+Creates the feature specification.
+
+```text
+/speckit.specify Add product reviews to the ecommerce app...
+```
+
+Done when:
+
+- `specs/<feature-name>/spec.md` exists.
+- User stories and acceptance criteria are readable.
+- You understand exactly what the feature should do.
+
+### Step 2: Clarify
+
+Resolves ambiguity before design and planning.
+
+```text
+/speckit.clarify Focus on required fields, edge cases, validation, and out-of-scope behavior.
+```
+
+Done when:
+
+- Questions are answered.
+- The spec no longer has unclear assumptions.
+- Edge cases are captured.
+
+### Step 3: Checklist
+
+Checks specification quality.
+
+```text
+/speckit.checklist
+```
+
+Done when:
+
+- A checklist exists under `specs/<feature-name>/checklists/`.
+- Important checklist items are passed or deliberately resolved.
+
+### Step 4: Plan
+
+Creates the technical design and implementation plan.
+
+```text
+/speckit.plan Use Flask, SQLAlchemy, SQLite, Jinja2, Bootstrap 5, and pytest...
+```
+
+Done when:
+
+- `specs/<feature-name>/plan.md` exists.
+- It describes model changes.
+- It describes route changes.
+- It describes template/UI changes.
+- It describes tests.
+- It has a sensible implementation order.
+
+### Step 5: Tasks
+
+Breaks the plan into ordered work items.
+
+```text
+/speckit.tasks
+```
+
+Done when:
+
+- `specs/<feature-name>/tasks.md` exists.
+- Tasks are small enough to implement.
+- Tasks are grouped by phase.
+- Tasks include tests and verification.
+
+### Step 6: Analyze
+
+Checks whether spec, plan, and tasks agree with each other.
+
+```text
+/speckit.analyze
+```
+
+Done when:
+
+- No major contradictions remain.
+- Every important requirement has a task.
+- Every task maps back to the feature.
+
+### Step 7: Implement
+
+Writes the actual code.
+
+```text
+/speckit.implement
+```
+
+Done when:
+
+- Application code changed.
+- Templates changed if UI was required.
+- Tests were added or updated.
+- The feature can be used in the running app.
+
+### Step 8: Test
+
+Verifies the implementation.
+
+```powershell
+pytest
+python run.py
+```
+
+Done when:
+
+- Tests pass.
+- The app starts.
+- You manually verify the feature in the browser.
+- You commit the completed feature.
+
+```powershell
+git status
+git add .
+git commit -m "Add product reviews"
+git push
+```
+
+## 9. Constitution -> Specify -> Plan -> Tasks -> Implement -> Test
+
+Think of the workflow like this:
+
+```text
+Constitution = project rules
+Specify      = what users need
+Clarify      = remove confusion
+Checklist    = validate requirement quality
+Plan         = how the app will be changed
+Tasks        = ordered engineering checklist
+Analyze      = consistency check before coding
+Implement    = write the code
+Test         = prove it works
+```
+
+### Constitution
+
+Use once at the start, then update only when your project principles change.
+
+Example:
+
+```text
+/speckit.constitution This is a Flask ecommerce learning project. Use Python 3.11, Flask, SQLAlchemy, SQLite, Jinja2, Bootstrap 5, and pytest. Requirements live in local markdown files. Features must be small, testable, and easy to explain.
+```
+
+### Specify
+
+Describe the feature from the user perspective.
+
+Example:
+
+```text
+/speckit.specify Add wishlist support. Shoppers can add products to a session-based wishlist, view wishlist items, remove items, and move items to cart. Authentication is not required.
+```
+
+### Plan
+
+Describe the technical implementation.
+
+Example:
+
+```text
+/speckit.plan Use Flask sessions for wishlist storage. Add wishlist helper functions, routes, Jinja2 templates, Bootstrap buttons, and pytest coverage. Do not add a database table for wishlist in v1.
+```
+
+### Tasks
+
+Ask Spec-Kit to create the implementation checklist.
+
+```text
+/speckit.tasks
+```
+
+### Implement
+
+Ask the coding agent to execute the tasks.
+
+```text
+/speckit.implement
+```
+
+### Test
+
+Run automated and manual checks.
+
+```powershell
+pytest
+python run.py
+```
+
+## 10. Current Feature Example: Product Reviews
+
+You already ran:
+
+```text
+/speckit.specify Add product reviews to the ecommerce app. Shoppers can add a review to a product detail page with reviewer name, rating from 1 to 5, and comment. Product detail pages show all reviews and average rating. Authentication is not required. Reviews should be stored in SQLite. Reviews cannot be edited or deleted in this version.
+```
+
+Next commands:
+
+```text
+/speckit.clarify Focus on required fields, comment length, rating validation, empty review states, and whether one user can submit multiple reviews.
+```
+
+```text
+/speckit.checklist
+```
+
+```text
+/speckit.plan Use the existing Flask app factory, SQLAlchemy models, SQLite database, Jinja2 templates, Bootstrap 5, and pytest. Add a Review model with product_id, reviewer_name, rating, comment, and created_at. Add a POST route to create reviews from product detail pages. Display average rating and reviews on product detail. Add tests for validation and display.
+```
+
+```text
+/speckit.tasks
+```
+
+```text
+/speckit.analyze
+```
+
+```text
+/speckit.implement
+```
+
+Then verify:
+
+```powershell
+pytest
+python run.py
+```
+
+Expected files for this feature:
+
+```text
+specs/002-product-reviews/spec.md
+specs/002-product-reviews/checklists/requirements.md
+specs/002-product-reviews/plan.md
+specs/002-product-reviews/tasks.md
+```
+
+## 11. Current Feature Example: Wishlist
+
+You already ran:
+
+```text
+/speckit.specify Add a wishlist feature. Shoppers can add products to a wishlist from catalog and product detail pages. The wishlist is stored in the session for v1. Shoppers can view wishlist items, remove items, and move an item from wishlist to cart. Authentication is not required.
+```
+
+Next commands:
+
+```text
+/speckit.clarify Focus on duplicate wishlist entries, empty wishlist behavior, moving wishlist items to cart, and session-only persistence.
+```
+
+```text
+/speckit.checklist
+```
+
+```text
+/speckit.plan Use the existing Flask session approach, similar to the cart. Add wishlist helper functions, routes for add/remove/view/move-to-cart, Bootstrap template updates, and pytest coverage for wishlist behavior. Do not create a database table for wishlist v1.
+```
+
+```text
+/speckit.tasks
+```
+
+```text
+/speckit.analyze
+```
+
+```text
+/speckit.implement
+```
+
+Then verify:
+
+```powershell
+pytest
+python run.py
+```
+
+Expected files for this feature:
+
+```text
+specs/003-wishlist-feature/spec.md
+specs/003-wishlist-feature/checklists/requirements.md
+specs/003-wishlist-feature/plan.md
+specs/003-wishlist-feature/tasks.md
+```
+
+## 12. What Each Prompt Means
 
 ### `/speckit.constitution`
 
@@ -292,7 +631,7 @@ pytest
 python run.py
 ```
 
-## 8. Example Feature: Product Reviews
+## 13. Example Feature: Product Reviews
 
 ### Step 1: Specify
 
@@ -343,7 +682,7 @@ pytest
 python run.py
 ```
 
-## 9. Example Feature: Wishlist
+## 14. Example Feature: Wishlist
 
 ```text
 /speckit.specify Add a wishlist feature. Shoppers can add products to a wishlist from catalog and product detail pages. The wishlist is stored in the session for v1. Shoppers can view wishlist items, remove items, and move an item from wishlist to cart. Authentication is not required.
@@ -353,7 +692,7 @@ python run.py
 /speckit.plan Use the existing Flask session approach, similar to the cart. Add wishlist helper functions, routes for add/remove/view/move-to-cart, Bootstrap template updates, and pytest coverage for wishlist behavior.
 ```
 
-## 10. Example Improvement: Catalog Pagination
+## 15. Example Improvement: Catalog Pagination
 
 ```text
 /speckit.specify Improve the product catalog with pagination. The catalog should show 12 products per page, preserve search and category filters between pages, and display previous/next controls. The UI should remain responsive.
@@ -363,7 +702,7 @@ python run.py
 /speckit.plan Use Flask query parameters for page number, SQLAlchemy pagination or limit/offset, existing Jinja2 templates, Bootstrap pagination controls, and tests for filtered pagination.
 ```
 
-## 11. Example Improvement: Admin Authentication
+## 16. Example Improvement: Admin Authentication
 
 ```text
 /speckit.specify Add simple admin authentication. Admin pages should require login. A single admin username and password can be configured with environment variables. If environment variables are missing, use safe local development defaults documented in README. Shopper catalog, cart, and checkout remain public.
@@ -373,7 +712,7 @@ python run.py
 /speckit.plan Use Flask sessions for admin login state. Add login/logout routes, protect all /admin routes, add environment variable configuration, update templates, and add tests that admin pages redirect when logged out.
 ```
 
-## 12. Best Practices
+## 17. Best Practices
 
 - Start every feature with a clear user problem.
 - Keep `/speckit.specify` mostly product-focused.
@@ -383,8 +722,10 @@ python run.py
 - Commit before and after each feature.
 - Run tests after implementation.
 - Keep real payment integration out of learning versions unless you intentionally create a payment feature.
+- Do not assume `/speckit.specify` implemented code. It only prepares requirements.
+- Do not implement two new features at once while learning. Finish one feature, test it, commit it, then start the next.
 
-## 13. Git And GitHub Commands
+## 18. Git And GitHub Commands
 
 Add the GitHub remote:
 

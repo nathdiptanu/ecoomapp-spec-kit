@@ -86,6 +86,11 @@ Spec-Kit is maintained from the official GitHub repository:
 
 [github/spec-kit](https://github.com/github/spec-kit)
 
+For a complete beginner-friendly workflow, including Python setup, Spec-Kit prompt meanings, feature examples, and how to know when specify/plan/tasks/implement/test are complete, see:
+
+- [SPEC_KIT_DEVELOPMENT_GUIDE.md](SPEC_KIT_DEVELOPMENT_GUIDE.md)
+- [SPEC_KIT_DEVELOPMENT_GUIDE.html](SPEC_KIT_DEVELOPMENT_GUIDE.html)
+
 The official documentation says to install from GitHub, not similarly named PyPI packages.
 
 Persistent install with `uv`:
