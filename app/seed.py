@@ -13,6 +13,17 @@ CATEGORY_DESCRIPTIONS = {
     "Toys": "Games, STEM kits, and creative play products.",
 }
 
+CATEGORY_IMAGES = {
+    "Electronics": "/static/product-images/electronics.svg",
+    "Mobile Phones": "/static/product-images/mobile-phones.svg",
+    "Laptops": "/static/product-images/laptops.svg",
+    "Fashion": "/static/product-images/fashion.svg",
+    "Home & Kitchen": "/static/product-images/home-kitchen.svg",
+    "Books": "/static/product-images/books.svg",
+    "Sports": "/static/product-images/sports.svg",
+    "Toys": "/static/product-images/toys.svg",
+}
+
 
 PRODUCT_NAMES = {
     "Electronics": [
@@ -92,6 +103,14 @@ PRODUCT_NAMES = {
 
 def seed_database():
     if Product.query.first():
+        refreshed = False
+        for product in Product.query.all():
+            image_url = CATEGORY_IMAGES.get(product.category.name)
+            if image_url and product.image_url.startswith("https://placehold.co"):
+                product.image_url = image_url
+                refreshed = True
+        if refreshed:
+            db.session.commit()
         return
 
     categories = {}
@@ -111,7 +130,7 @@ def seed_database():
                 description=f"{product_name} with dependable quality, fast local checkout, and demo-ready inventory.",
                 price=round(price, 2),
                 stock=10 + (product_index % 35),
-                image_url=f"https://placehold.co/600x400?text={product_name.replace(' ', '+')}",
+                image_url=CATEGORY_IMAGES[category_name],
                 category=categories[category_name],
             )
             db.session.add(product)

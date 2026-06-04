@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" role="img" aria-labelledby="title desc">
+  <title id="title">Fashion</title>
+  <desc id="desc">Illustration of clothing and shoes</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#be123c"/>
+      <stop offset="1" stop-color="#831843"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="400" fill="url(#bg)"/>
+  <circle cx="500" cy="80" r="100" fill="#fbcfe8" opacity=".22"/>
+  <circle cx="105" cy="325" r="110" fill="#fecdd3" opacity=".2"/>
+  <path d="M245 110l-68 42 35 58 38-20v190h200V190l38 20 35-58-68-42-44 40h-122z" fill="#fff1f2"/>
+  <path d="M290 150h120l-20 52h-70z" fill="#fb7185"/>
+  <path d="M165 322c64 18 118 12 162-18 15 25 4 45-29 58H158c-20-10-21-24 7-40z" fill="#fecdd3"/>
+  <text x="42" y="64" fill="#fff1f2" font-family="Arial, sans-serif" font-size="34" font-weight="700">Fashion</text>
+</svg>
